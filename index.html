@@ -86,8 +86,8 @@
       border-radius: 30px;
       width: 90%;
       max-width: 600px;
-      height: auto;
-      min-height: 650px;
+      height: 50vh;
+      min-height: 450px;
       text-align: center;
       box-shadow:
         0 25px 60px rgba(0, 0, 0, 0.2),
@@ -105,7 +105,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      min-height: 650px;
+      min-height: 50vh;
       text-align: center;
       transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       transform-style: preserve-3d;
@@ -120,8 +120,8 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      min-height: 650px;
-      padding: 30px 25px;
+      min-height: 50vh;
+      padding: 25px 20px;
       backface-visibility: hidden;
       border-radius: 30px;
       display: flex;
@@ -158,8 +158,8 @@
 
     .title {
       font-family: 'Fredoka One', cursive;
-      font-size: 28px;
-      margin: 0 0 25px 0;
+      font-size: 24px;
+      margin: 0 0 20px 0;
       background: linear-gradient(45deg, #ff6b9d, #f8b500, #6c5ce7);
       -webkit-background-clip: text;
       background-clip: text;
@@ -171,8 +171,8 @@
 
     .result-title {
       font-family: 'Fredoka One', cursive;
-      font-size: 24px;
-      margin: 0 0 25px 0;
+      font-size: 22px;
+      margin: 0 0 20px 0;
       color: white;
       text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       animation: titlePulse 3s ease-in-out infinite;
@@ -183,14 +183,14 @@
       border: 2px solid rgba(255, 255, 255, 0.3);
       color: white;
       padding: 0;
-      width: 150px;
-      height: 150px;
+      width: 130px;
+      height: 130px;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin: 25px auto 0 auto;
+      margin: 20px auto 0 auto;
       backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
@@ -419,17 +419,17 @@
     }
 
     .btn-calc {
-      margin: 30px auto 0 auto;
+      margin: 20px auto 0 auto;
       padding: 0;
-      width: 120px;
-      height: 80px;
+      width: 110px;
+      height: 70px;
       border-radius: 8px;
       border: none;
       background: linear-gradient(45deg, #ff6b9d, #f8b500, #6c5ce7);
       background-size: 200% 200%;
       color: #fff;
       font-weight: 500;
-      font-size: 16px;
+      font-size: 15px;
       font-family: 'Space Grotesk', sans-serif;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -717,7 +717,8 @@
     @media (max-width: 480px) {
       .container {
         width: 98vw;
-        min-height: 650px;
+        height: 50vh;
+        min-height: 400px;
       }
 
       .card-inner {
