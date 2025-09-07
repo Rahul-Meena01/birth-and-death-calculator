@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Age & Death Calculator ✨</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(120deg, #ff6b9d, #c44569, #f8b500, #6c5ce7, #fd79a8, #00b894);
+      background-size: 600% 600%;
+      animation: gradientShift 12s ease infinite;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Floating particles background */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+      background-size: 100px 100px, 150px 150px, 200px 200px;
+      animation: floatParticles 25s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatParticles {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+      }
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      25% {
+        background-position: 100% 50%;
+      }
+
+      50% {
+        background-position: 100% 100%;
+      }
+
+      75% {
+        background-position: 0% 100%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      width: 700px;
+      max-width: 95vw;
+      height: auto;
+      min-height: 900px;
+      text-align: center;
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.2),
+        0 0 100px rgba(255, 107, 157, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      position: relative;
+      z-index: 1;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: containerFloat 6s ease-in-out infinite;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 900px;
+      text-align: center;
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-style: preserve-3d;
+    }
+
+    .container.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      min-height: 900px;
+      padding: 40px;
+      backface-visibility: hidden;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .card-front {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.95), rgba(255, 107, 157, 0.95));
+      backdrop-filter: blur(20px);
+      transform: rotateY(180deg);
+      color: white;
+      padding-top: 50px;
+    }
+
+    @keyframes containerFloat {
+
+      0%,
+      100% {
+        transform: translateY(0px) scale(1);
+      }
+
+      50% {
+        transform: translateY(-10px) scale(1.02);
+      }
+    }
+
+    .title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 34px;
+      margin: 0 0 35px 0;
+      background: linear-gradient(45deg, #ff6b9d, #f8b500, #6c5ce7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: titlePulse 3s ease-in-out infinite;
+      text-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+      position: relative;
+    }
+
+    .result-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 30px;
+      margin: 0 0 35px 0;
+      color: white;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: titlePulse 3s ease-in-out infinite;
+    }
+
+    .btn-back {
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0;
+      width: 200px;
+      height: 200px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 25px auto 0 auto;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .title::before {
+      content: '✨';
+      position: absolute;
+      left: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: sparkleLeft 2s ease-in-out infinite;
+    }
+
+    .title::after {
+      content: '✨';
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: sparkleRight 2s ease-in-out infinite reverse;
+    }
+
+    @keyframes titlePulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes sparkleLeft {
+
+      0%,
+      100% {
+        transform: translateY(-50%) rotate(0deg) scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: translateY(-50%) rotate(180deg) scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    @keyframes sparkleRight {
+
+      0%,
+      100% {
+        transform: translateY(-50%) rotate(0deg) scale(1);
+        opacity: 0.7;
+      }
+
+      50% {
+        transform: translateY(-50%) rotate(-180deg) scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 30px 0 20px 0;
+      color: #c44569;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(45deg, #ff6b9d, #f8b500);
+    }
+
+    .section-title::before {
+      left: -60px;
+    }
+
+    .section-title::after {
+      right: -60px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 35px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper label {
+      font-weight: 700;
+      color: #c44569;
+      font-size: 16px;
+      margin-bottom: 8px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    input[type="number"] {
+      width: 110px;
+      height: 60px;
+      border-radius: 18px;
+      border: 3px solid transparent;
+      background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+      background-clip: padding-box;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      font-family: 'Space Grotesk', monospace;
+      color: #2c3e50;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow:
+        0 8px 25px rgba(255, 107, 157, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      position: relative;
+    }
+
+    input[type="number"]:focus {
+      background: linear-gradient(145deg, #fff, #f8f9fa);
+      border-color: #ff6b9d;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow:
+        0 0 30px rgba(255, 107, 157, 0.4),
+        0 12px 35px rgba(255, 107, 157, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+      animation: inputGlow 2s infinite;
+    }
+
+    input[type="number"]:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 12px 30px rgba(255, 107, 157, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    }
+
+    input[type="number"].error {
+      border-color: #e74c3c;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes inputGlow {
+
+      0%,
+      100% {
+        box-shadow:
+          0 0 30px rgba(255, 107, 157, 0.4),
+          0 12px 35px rgba(255, 107, 157, 0.25),
+          inset 0 1px 0 rgba(255, 255, 255, 1);
+      }
+
+      50% {
+        box-shadow:
+          0 0 40px rgba(255, 107, 157, 0.6),
+          0 15px 40px rgba(255, 107, 157, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 1);
+      }
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 5px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .error-message.show {
+      opacity: 1;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-calc {
+      margin: 30px auto 0 auto;
+      padding: 0;
+      width: 150px;
+      height: 100px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(45deg, #ff6b9d, #f8b500, #6c5ce7);
+      background-size: 200% 200%;
+      color: #fff;
+      font-weight: 500;
+      font-size: 18px;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow:
+        0 10px 30px rgba(255, 107, 157, 0.4),
+        0 0 50px rgba(196, 69, 105, 0.2);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: buttonGradient 3s ease infinite;
+    }
+
+    .btn-calc:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow:
+        0 15px 40px rgba(255, 107, 157, 0.5),
+        0 0 60px rgba(196, 69, 105, 0.3);
+      background-position: 100% 100%;
+    }
+
+    .btn-calc:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .btn-calc.loading {
+      pointer-events: none;
+      animation: buttonLoading 1s ease infinite;
+    }
+
+    .btn-calc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-calc:hover::before {
+      left: 100%;
+    }
+
+    @keyframes buttonGradient {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes buttonLoading {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.8;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow:
+        0 10px 30px rgba(255, 107, 157, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .result.show {
+      opacity: 1;
+      transform: translateY(0);
+      animation: resultSlideIn 0.8s ease;
+    }
+
+    .result h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      margin: 15px 0 10px 0;
+      color: #2c3e50;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .result h4:first-child {
+      margin-top: 0;
+    }
+
+    .time-display {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .time-unit {
+      background: rgba(255, 107, 157, 0.1);
+      border-radius: 12px;
+      padding: 10px 15px;
+      text-align: center;
+      min-width: 80px;
+      border: 1px solid rgba(255, 107, 157, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .time-unit:hover {
+      background: rgba(255, 107, 157, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .number {
+      color: #ff4757;
+      font-size: 24px;
+      font-weight: 900;
+      display: block;
+      font-family: 'Space Grotesk', monospace;
+      text-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+      animation: numberPulse 2s ease-in-out infinite;
+    }
+
+    .unit-label {
+      color: #666;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 5px;
+    }
+
+    .live-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #00b894;
+      border-radius: 50%;
+      margin-left: 10px;
+      animation: livePulse 1s ease-in-out infinite;
+    }
+
+    @keyframes resultSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes numberPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes livePulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        width: 95vw;
+        min-height: 750px;
+        margin: 10px auto;
+      }
+
+      .card-inner {
+        min-height: 750px;
+      }
+
+      .card-front,
+      .card-back {
+        padding: 30px 25px;
+        min-height: 750px;
+      }
+
+      .title,
+      .result-title {
+        font-size: 26px;
+        margin-bottom: 25px;
+      }
+
+      .title::before,
+      .title::after {
+        display: none;
+      }
+
+      .section-title {
+        font-size: 18px;
+        margin: 25px 0 15px 0;
+      }
+
+      .section-title::before,
+      .section-title::after {
+        display: none;
+      }
+
+      .input-group {
+        gap: 15px;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .input-wrapper {
+        width: 100%;
+        max-width: 180px;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        height: 50px;
+        font-size: 16px;
+      }
+
+      .btn-calc,
+      .btn-back {
+        width: 150px;
+        height: 150px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .time-display {
+        gap: 8px;
+        grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+      }
+
+      .time-unit {
+        min-width: 65px;
+        padding: 8px 6px;
+      }
+
+      .number {
+        font-size: 18px;
+      }
+
+      .unit-label {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 98vw;
+        min-height: 650px;
+      }
+
+      .card-inner {
+        min-height: 650px;
+      }
+
+      .card-front,
+      .card-back {
+        padding: 25px 15px;
+        min-height: 650px;
+      }
+
+      .title,
+      .result-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        margin: 20px 0 12px 0;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .btn-calc,
+      .btn-back {
+        width: 120px;
+        height: 120px;
+        font-size: 14px;
+      }
+
+      .time-display {
+        gap: 6px;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .time-unit {
+        min-width: 55px;
+        padding: 6px 4px;
+      }
+
+      .number {
+        font-size: 16px;
+      }
+
+      .unit-label {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card-inner">
+      <!-- Front side - Input form -->
+      <div class="card-front">
+        <h1 class="title">🌸 Life & Death Calculator 🌸</h1>
+
+        <h3 class="section-title">📅 Enter Birth Date</h3>
+        <div class="input-group">
+          <div class="input-wrapper">
+            <label>Day</label>
+            <input id="bday" type="number" min="1" max="31" placeholder="DD">
+            <div class="error-message" id="bday-error"></div>
+          </div>
+          <div class="input-wrapper">
+            <label>Month</label>
+            <input id="bmonth" type="number" min="1" max="12" placeholder="MM">
+            <div class="error-message" id="bmonth-error"></div>
+          </div>
+          <div class="input-wrapper">
+            <label>Year</label>
+            <input id="byear" type="number" min="1900" max="2100" placeholder="YYYY">
+            <div class="error-message" id="byear-error"></div>
+          </div>
+        </div>
+
+        <h3 class="section-title">💀 Enter Expected Death Date</h3>
+        <div class="input-group">
+          <div class="input-wrapper">
+            <label>Day</label>
+            <input id="dday" type="number" min="1" max="31" placeholder="DD">
+            <div class="error-message" id="dday-error"></div>
+          </div>
+          <div class="input-wrapper">
+            <label>Month</label>
+            <input id="dmonth" type="number" min="1" max="12" placeholder="MM">
+            <div class="error-message" id="dmonth-error"></div>
+          </div>
+          <div class="input-wrapper">
+            <label>Year</label>
+            <input id="dyear" type="number" min="2025" max="2500" placeholder="YYYY">
+            <div class="error-message" id="dyear-error"></div>
+          </div>
+        </div>
+
+        <button class="btn-calc">Calculate</button>
+      </div>
+
+      <!-- Back side - Results -->
+      <div class="card-back">
+        <h1 class="result-title">✨ Your Life Journey ✨</h1>
+        <div class="result"></div>
+        <button class="btn-back">Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const resultDiv = document.querySelector('.result');
+    const btnCalc = document.querySelector('.btn-calc');
+    const btnBack = document.querySelector('.btn-back');
+    const container = document.querySelector('.container');
+    const inputs = document.querySelectorAll('input[type="number"]');
+    let updateInterval;
+
+    // Card flip functions
+    function flipToResults() {
+      container.classList.add('flipped');
+    }
+
+    function flipToForm() {
+      container.classList.remove('flipped');
+      // Clear the result and stop any running intervals
+      clearInterval(updateInterval);
+      resultDiv.innerHTML = '';
+    }
+
+    // Back button handler
+    btnBack.addEventListener('click', flipToForm);
+
+    // Enhanced date validation
+    function isValidDate(day, month, year) {
+      if (!day || !month || !year) return false;
+
+      const date = new Date(year, month - 1, day);
+      const isValid = date &&
+        date.getFullYear() === year &&
+        date.getMonth() + 1 === month &&
+        date.getDate() === day;
+
+      // Additional checks
+      if (day < 1 || day > 31) return false;
+      if (month < 1 || month > 12) return false;
+      if (year < 1900 || year > 2500) return false;
+
+      return isValid;
+    }
+
+    // Show error message
+    function showError(inputId, message) {
+      const input = document.getElementById(inputId);
+      const errorDiv = document.getElementById(inputId + '-error');
+
+      input.classList.add('error');
+      errorDiv.textContent = message;
+      errorDiv.classList.add('show');
+
+      setTimeout(() => {
+        input.classList.remove('error');
+        errorDiv.classList.remove('show');
+      }, 3000);
+    }
+
+    // Clear all errors
+    function clearErrors() {
+      inputs.forEach(input => {
+        input.classList.remove('error');
+        const errorDiv = document.getElementById(input.id + '-error');
+        errorDiv.classList.remove('show');
+      });
+    }
+
+    // Validate all inputs
+    function validateInputs(bday, bmonth, byear, dday, dmonth, dyear) {
+      clearErrors();
+      let isValid = true;
+
+      // Validate birth date
+      if (!isValidDate(bday, bmonth, byear)) {
+        showError('bday', 'Invalid birth date');
+        isValid = false;
+      }
+
+      // Validate death date
+      if (!isValidDate(dday, dmonth, dyear)) {
+        showError('dday', 'Invalid death date');
+        isValid = false;
+      }
+
+      // Check if birth date is in the future
+      const birthDate = new Date(byear, bmonth - 1, bday);
+      const now = new Date();
+      if (birthDate > now) {
+        showError('byear', 'Birth date cannot be in the future');
+        isValid = false;
+      }
+
+      // Check if death date is before birth date
+      const deathDate = new Date(dyear, dmonth - 1, dday);
+      if (deathDate <= birthDate) {
+        showError('dyear', 'Death date must be after birth date');
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    function calcLife(bday, bmonth, byear, dday, dmonth, dyear) {
+      const birth = new Date(byear, bmonth - 1, bday);
+      const death = new Date(dyear, dmonth - 1, dday);
+      const now = new Date();
+
+      if (!validateInputs(bday, bmonth, byear, dday, dmonth, dyear)) {
+        return null;
+      }
+
+      // Age so far
+      let lived = now - birth;
+      // Time left
+      let remaining = death - now;
+
+      // Calculate percentage of life lived
+      const totalLife = death - birth;
+      const percentageLived = (lived / totalLife) * 100;
+
+      return { lived, remaining, percentageLived: Math.round(percentageLived * 100) / 100 };
+    }
+
+    function formatDuration(ms) {
+      let sec = Math.floor(ms / 1000);
+      let min = Math.floor(sec / 60);
+      let hr = Math.floor(min / 60);
+      let days = Math.floor(hr / 24);
+      let years = Math.floor(days / 365);
+      let months = Math.floor((days % 365) / 30);
+      days = days % 30;
+      hr %= 24;
+      min %= 60;
+      sec %= 60;
+
+      return { years, months, days, hr, min, sec };
+    }
+
+    function animateNumber(element, targetValue, duration = 1000) {
+      const startValue = parseInt(element.textContent) || 0;
+      const increment = (targetValue - startValue) / (duration / 16);
+      let currentValue = startValue;
+
+      const timer = setInterval(() => {
+        currentValue += increment;
+        if ((increment > 0 && currentValue >= targetValue) ||
+          (increment < 0 && currentValue <= targetValue)) {
+          currentValue = targetValue;
+          clearInterval(timer);
+        }
+        element.textContent = Math.floor(currentValue);
+      }, 16);
+    }
+
+    function showResult(life) {
+      if (!life) {
+        resultDiv.innerHTML = '<h4 style="color: #e74c3c;">❌ Please enter valid dates!</h4>';
+        resultDiv.classList.add('show');
+        return;
+      }
+
+      const lived = formatDuration(life.lived);
+      const remaining = formatDuration(life.remaining);
+
+      resultDiv.innerHTML = `
+        <h4>⏳ You have lived <span class="live-indicator"></span></h4>
+        <div class="time-display">
+          <div class="time-unit">
+            <span class="number" data-value="${lived.years}">0</span>
+            <div class="unit-label">Years</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${lived.months}">0</span>
+            <div class="unit-label">Months</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${lived.days}">0</span>
+            <div class="unit-label">Days</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${lived.hr}">0</span>
+            <div class="unit-label">Hours</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${lived.min}">0</span>
+            <div class="unit-label">Minutes</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${lived.sec}">0</span>
+            <div class="unit-label">Seconds</div>
+          </div>
+        </div>
+        
+        <h4>💀 Time remaining</h4>
+        <div class="time-display">
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.years}">0</span>
+            <div class="unit-label">Years</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.months}">0</span>
+            <div class="unit-label">Months</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.days}">0</span>
+            <div class="unit-label">Days</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.hr}">0</span>
+            <div class="unit-label">Hours</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.min}">0</span>
+            <div class="unit-label">Minutes</div>
+          </div>
+          <div class="time-unit">
+            <span class="number" data-value="${remaining.sec}">0</span>
+            <div class="unit-label">Seconds</div>
+          </div>
+        </div>
+        
+        <h4>📊 Life Progress: ${life.percentageLived}% Complete</h4>
+        <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 20px; margin: 10px 0; overflow: hidden;">
+          <div style="background: linear-gradient(45deg, #ff6b9d, #f8b500); height: 100%; width: ${life.percentageLived}%; border-radius: 10px; transition: width 2s ease;"></div>
+        </div>
+      `;
+
+      resultDiv.classList.add('show');
+
+      // Animate numbers
+      setTimeout(() => {
+        const numberElements = resultDiv.querySelectorAll('.number[data-value]');
+        numberElements.forEach((el, index) => {
+          setTimeout(() => {
+            animateNumber(el, parseInt(el.dataset.value), 800);
+          }, index * 100);
+        });
+      }, 300);
+
+      // Start live updates
+      startLiveUpdate();
+    }
+
+    function startLiveUpdate() {
+      clearInterval(updateInterval);
+      updateInterval = setInterval(() => {
+        const bday = parseInt(document.getElementById('bday').value);
+        const bmonth = parseInt(document.getElementById('bmonth').value);
+        const byear = parseInt(document.getElementById('byear').value);
+        const dday = parseInt(document.getElementById('dday').value);
+        const dmonth = parseInt(document.getElementById('dmonth').value);
+        const dyear = parseInt(document.getElementById('dyear').value);
+
+        if (bday && bmonth && byear && dday && dmonth && dyear) {
+          const life = calcLife(bday, bmonth, byear, dday, dmonth, dyear);
+          if (life) {
+            const lived = formatDuration(life.lived);
+            const remaining = formatDuration(life.remaining);
+
+            // Update only the numbers without recreating the entire result
+            const numberElements = resultDiv.querySelectorAll('.number');
+            if (numberElements.length >= 12) {
+              numberElements[0].textContent = lived.years;
+              numberElements[1].textContent = lived.months;
+              numberElements[2].textContent = lived.days;
+              numberElements[3].textContent = lived.hr;
+              numberElements[4].textContent = lived.min;
+              numberElements[5].textContent = lived.sec;
+              numberElements[6].textContent = remaining.years;
+              numberElements[7].textContent = remaining.months;
+              numberElements[8].textContent = remaining.days;
+              numberElements[9].textContent = remaining.hr;
+              numberElements[10].textContent = remaining.min;
+              numberElements[11].textContent = remaining.sec;
+            }
+          }
+        }
+      }, 1000);
+    }
+
+    // Button click handler
+    btnCalc.addEventListener('click', () => {
+      btnCalc.classList.add('loading');
+
+      setTimeout(() => {
+        const bday = parseInt(document.getElementById('bday').value);
+        const bmonth = parseInt(document.getElementById('bmonth').value);
+        const byear = parseInt(document.getElementById('byear').value);
+        const dday = parseInt(document.getElementById('dday').value);
+        const dmonth = parseInt(document.getElementById('dmonth').value);
+        const dyear = parseInt(document.getElementById('dyear').value);
+
+        const life = calcLife(bday, bmonth, byear, dday, dmonth, dyear);
+
+        if (life) {
+          // Flip the card and show results
+          flipToResults();
+          setTimeout(() => {
+            showResult(life);
+          }, 400); // Wait for flip animation to start
+        }
+
+        btnCalc.classList.remove('loading');
+      }, 500);
+    });
+
+    // Keyboard shortcuts
+    inputs.forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          btnCalc.click();
+        }
+      });
+
+      // Clear errors on input
+      input.addEventListener('input', () => {
+        input.classList.remove('error');
+        const errorDiv = document.getElementById(input.id + '-error');
+        errorDiv.classList.remove('show');
+      });
+    });
+
+    // Auto-calculate on input change (after 2 seconds of no typing)
+    let autoCalcTimeout;
+    inputs.forEach(input => {
+      input.addEventListener('input', () => {
+        clearTimeout(autoCalcTimeout);
+        autoCalcTimeout = setTimeout(() => {
+          if (Array.from(inputs).every(inp => inp.value)) {
+            btnCalc.click();
+          }
+        }, 2000);
+      });
+    });
+
+    // Clean up interval on page unload
+    window.addEventListener('beforeunload', () => {
+      clearInterval(updateInterval);
+    });
+  </script>
+</body>
+
+</html>
