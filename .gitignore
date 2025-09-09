@@ -1,0 +1,54 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows system files
+desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.#*
+#*#
+
+# Backup files
+*.backup
+*.bak
+*_backup.*
+index_backup.html
+
+# Editor files
+.vscode/settings.json
+.vscode/launch.json
+*.swp
+*.swo
+*~
+
+# Cache files
+*.cache
+
+# Log files
+*.log
+
+# Node modules (if any)
+node_modules/
+
+# Dependencies
+bower_components/
+
+# IDE files
+.idea/
+*.suo
+*.user
+*.sln.docstates
+
+# Build outputs
+dist/
+build/
